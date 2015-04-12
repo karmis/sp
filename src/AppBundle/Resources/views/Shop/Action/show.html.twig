@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Shop\Action</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Caption</th>
+                <td>{{ entity.caption }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Startdate</th>
+                <td>{{ entity.startDate }}</td>
+            </tr>
+            <tr>
+                <th>Enddate</th>
+                <td>{{ entity.endDate }}</td>
+            </tr>
+            <tr>
+                <th>Starttime</th>
+                <td>{{ entity.startTime }}</td>
+            </tr>
+            <tr>
+                <th>Endtime</th>
+                <td>{{ entity.endTime }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ entity.price }}</td>
+            </tr>
+            <tr>
+                <th>Percent</th>
+                <td>{{ entity.percent }}</td>
+            </tr>
+            <tr>
+                <th>Mathmark</th>
+                <td>{{ entity.mathMark }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ entity.published }}</td>
+            </tr>
+            <tr>
+                <th>Deleted</th>
+                <td>{{ entity.deleted }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('shop_action') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('shop_action_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -36,20 +36,132 @@ class Category
     /**
      * @var boolean
      *
-     * @ORM\Column(name="published", type="boolean")
+     * @ORM\Column(name="published", type="boolean", nullable=true)
      */
     private $published;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="deleted", type="boolean")
+     * @ORM\Column(name="deleted", type="boolean", nullable=true)
      */
     private $deleted;
 
     public function __construct()
     {
-        $this->published = 1;
-        $this->deleted = 0;
+        $this->published = true;
+        $this->deleted = false;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set caption
+     *
+     * @param string $caption
+     * @return Category
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * Get caption
+     *
+     * @return string 
+     */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     * @return Category
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean 
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Category
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \AppBundle\Entity\Shop\Product $products
+     * @return Category
+     */
+    public function addProduct(\AppBundle\Entity\Shop\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \AppBundle\Entity\Shop\Product $products
+     */
+    public function removeProduct(\AppBundle\Entity\Shop\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 }

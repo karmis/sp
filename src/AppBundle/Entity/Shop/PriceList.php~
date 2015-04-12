@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PriceList
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Shop\PriceListRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Shop\PriceListRepository")
  */
 class PriceList
 {
@@ -29,6 +29,11 @@ class PriceList
     private $caption;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="priceLists")
+     **/
+    private $products;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="price", type="float")
@@ -36,25 +41,27 @@ class PriceList
     private $price;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="category", type="string", length=255)
-     */
-    private $category;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
-
-    /**
      * @var boolean
      *
-     * @ORM\Column(name="isAction", type="boolean")
+     * @ORM\Column(name="haveAction", type="boolean")
      */
-    private $isAction;
+    private $haveAction;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Action", mappedBy="priceLists")
+     **/
+    private $actions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Shop", mappedBy="personalPriceList")
+     **/
+    private $shops;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="commonPriceList")
+     * @ORM\JoinColumn(name="common_priceList_id", referencedColumnName="id")
+     **/
+    private $organization;
 
     /**
      * @var boolean
@@ -66,10 +73,16 @@ class PriceList
     /**
      * @var boolean
      *
-     * @ORM\Column(name="visible", type="boolean")
+     * @ORM\Column(name="deleted", type="boolean")
      */
-    private $visible;
+    private $deleted;
 
+    public function __construct()
+    {
+        $this->published = true;
+        $this->deleted = false;
+        $this->haveAction = false;
+    }
 
     /**
      * Get id
@@ -128,72 +141,26 @@ class PriceList
     }
 
     /**
-     * Set category
+     * Set haveAction
      *
-     * @param string $category
+     * @param boolean $haveAction
      * @return PriceList
      */
-    public function setCategory($category)
+    public function setHaveAction($haveAction)
     {
-        $this->category = $category;
+        $this->haveAction = $haveAction;
 
         return $this;
     }
 
     /**
-     * Get category
-     *
-     * @return string 
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return PriceList
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set isAction
-     *
-     * @param boolean $isAction
-     * @return PriceList
-     */
-    public function setIsAction($isAction)
-    {
-        $this->isAction = $isAction;
-
-        return $this;
-    }
-
-    /**
-     * Get isAction
+     * Get haveAction
      *
      * @return boolean 
      */
-    public function getIsAction()
+    public function getHaveAction()
     {
-        return $this->isAction;
+        return $this->haveAction;
     }
 
     /**
@@ -220,25 +187,147 @@ class PriceList
     }
 
     /**
-     * Set visible
+     * Set deleted
      *
-     * @param boolean $visible
+     * @param boolean $deleted
      * @return PriceList
      */
-    public function setVisible($visible)
+    public function setDeleted($deleted)
     {
-        $this->visible = $visible;
+        $this->deleted = $deleted;
 
         return $this;
     }
 
     /**
-     * Get visible
+     * Get deleted
      *
      * @return boolean 
      */
-    public function getVisible()
+    public function getDeleted()
     {
-        return $this->visible;
+        return $this->deleted;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \AppBundle\Entity\Shop\Product $products
+     * @return PriceList
+     */
+    public function addProduct(\AppBundle\Entity\Shop\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \AppBundle\Entity\Shop\Product $products
+     */
+    public function removeProduct(\AppBundle\Entity\Shop\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Add actions
+     *
+     * @param \AppBundle\Entity\Shop\Action $actions
+     * @return PriceList
+     */
+    public function addAction(\AppBundle\Entity\Shop\Action $actions)
+    {
+        $this->actions[] = $actions;
+
+        return $this;
+    }
+
+    /**
+     * Remove actions
+     *
+     * @param \AppBundle\Entity\Shop\Action $actions
+     */
+    public function removeAction(\AppBundle\Entity\Shop\Action $actions)
+    {
+        $this->actions->removeElement($actions);
+    }
+
+    /**
+     * Get actions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * Add shops
+     *
+     * @param \AppBundle\Entity\Shop\Shop $shops
+     * @return PriceList
+     */
+    public function addShop(\AppBundle\Entity\Shop\Shop $shops)
+    {
+        $this->shops[] = $shops;
+
+        return $this;
+    }
+
+    /**
+     * Remove shops
+     *
+     * @param \AppBundle\Entity\Shop\Shop $shops
+     */
+    public function removeShop(\AppBundle\Entity\Shop\Shop $shops)
+    {
+        $this->shops->removeElement($shops);
+    }
+
+    /**
+     * Get shops
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShops()
+    {
+        return $this->shops;
+    }
+
+    /**
+     * Set organization
+     *
+     * @param \AppBundle\Entity\Shop\Organization $organization
+     * @return PriceList
+     */
+    public function setOrganization(\AppBundle\Entity\Shop\Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return \AppBundle\Entity\Shop\Organization 
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 }

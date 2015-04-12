@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Shop\PriceList list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Caption</th>
+                <th>Price</th>
+                <th>Haveaction</th>
+                <th>Published</th>
+                <th>Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('shop_pricelist_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.caption }}</td>
+                <td>{{ entity.price }}</td>
+                <td>{{ entity.haveAction }}</td>
+                <td>{{ entity.published }}</td>
+                <td>{{ entity.deleted }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('shop_pricelist_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('shop_pricelist_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('shop_pricelist_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

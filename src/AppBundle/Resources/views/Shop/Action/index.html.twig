@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Shop\Action list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Caption</th>
+                <th>Description</th>
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>Starttime</th>
+                <th>Endtime</th>
+                <th>Price</th>
+                <th>Percent</th>
+                <th>Mathmark</th>
+                <th>Published</th>
+                <th>Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('shop_action_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.caption }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.startDate }}</td>
+                <td>{{ entity.endDate }}</td>
+                <td>{{ entity.startTime }}</td>
+                <td>{{ entity.endTime }}</td>
+                <td>{{ entity.price }}</td>
+                <td>{{ entity.percent }}</td>
+                <td>{{ entity.mathMark }}</td>
+                <td>{{ entity.published }}</td>
+                <td>{{ entity.deleted }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('shop_action_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('shop_action_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('shop_action_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

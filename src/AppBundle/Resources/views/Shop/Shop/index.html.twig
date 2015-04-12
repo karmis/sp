@@ -1,0 +1,57 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Shop\Shop list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Caption</th>
+                <th>Address</th>
+                <th>Opentime</th>
+                <th>Closetime</th>
+                <th>Lunchtimestart</th>
+                <th>Lunchtimeend</th>
+                <th>Havepersonalpricelist</th>
+                <th>Published</th>
+                <th>Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('shop_shop_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.caption }}</td>
+                <td>{{ entity.address }}</td>
+                <td>{{ entity.openTime }}</td>
+                <td>{{ entity.closeTime }}</td>
+                <td>{{ entity.lunchTimeStart }}</td>
+                <td>{{ entity.lunchTimeEnd }}</td>
+                <td>{{ entity.havePersonalPriceList }}</td>
+                <td>{{ entity.published }}</td>
+                <td>{{ entity.deleted }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('shop_shop_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('shop_shop_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('shop_shop_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
